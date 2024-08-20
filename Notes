@@ -1,0 +1,11 @@
+Splunk Instance
+
+1. Installed Splunk App for Jnekins
+2. Created SoftMania Jenkins Monitoring App
+3. Settings --> Data Inputs --> HEC Inputs --> Global Settings --> All Tokens (Enable) and Uncheck Enable SSL
+4. HEC Inputs --> New Token -->
+
+Jira
+
+4. Manage Jenkins --> Plugins --> Splunk Plugin
+5. 
