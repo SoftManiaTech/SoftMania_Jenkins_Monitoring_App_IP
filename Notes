@@ -13,3 +13,6 @@ Editing to check github integration is working or not
 
 
 index="jenkins_statistics" job_result="*"| sendemail to="varshamanasa9903@gmail.com" cc="ibnusain4314@gmail.com" subject="Splunk Email sending test email" message="This is a test email from splunk" sendresults=true inline=true
+
+
+Testing comit
