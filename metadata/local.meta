@@ -1,0 +1,31 @@
+[app/ui]
+version = 9.2.0
+modtime = 1724149107.380995000
+
+[app/launcher]
+version = 9.2.0
+modtime = 1724149107.382468000
+
+[indexes/softmania_jenkins_monitoring_idx]
+owner = admin
+version = 9.2.0
+modtime = 1724152806.279486000
+
+[inputs/http%3A%2F%2Fjenkins2]
+access = read : [ admin ], write : [ admin ]
+export = none
+owner = admin
+version = 9.2.0
+modtime = 1724245741.016273000
+
+[savedsearches/Daily%20Jenkins%20Job%20Statistics]
+access = read : [ * ]
+export = none
+owner = admin
+version = 9.2.0
+modtime = 1724911403.659545000
+
+[views/jenkins_monitoring]
+owner = admin
+version = 9.2.0
+modtime = 1726900992.194466000
