@@ -1,0 +1,248 @@
+<form version="1.1" theme="light">
+  <label>Jenkins Monitoring</label>
+  <fieldset submitButton="false"></fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Total Number of Pipelines</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="*" | stats dc(job_name)</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="show_panel1">true</set>
+          <unset token="form.hide_panel1"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Builds Ran</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="*" | stats count(job_name)</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="show_panel2">true</set>
+          <unset token="form.hide_panel2"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Success Builds</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="SUCCESS" | stats count(job_name)</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="show_panel3">true</set>
+          <unset token="form.hide_panel3"></unset>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Failed Builds</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="FAILED" | stats count(job_name)</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <set token="show_panel4">true</set>
+          <unset token="form.hide_panel4"></unset>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$show_panel1$">
+      <input type="checkbox" token="hide_panel1">
+        <label></label>
+        <choice value="hide">Hide Panel</choice>
+        <change>
+          <condition value="hide">
+            <unset token="show_panel1"></unset>
+          </condition>
+        </change>
+      </input>
+      <table>
+        <title>Names of the Pipeline/Jobs in Jenkins</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="*" |stats Values(job_name)</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel depends="$show_panel2$">
+      <input type="checkbox" token="hide_panel2">
+        <label></label>
+        <choice value="hide">Hide Panel</choice>
+        <change>
+          <condition value="hide">
+            <unset token="show_panel2"></unset>
+          </condition>
+        </change>
+      </input>
+      <table>
+        <title>Details of Builds ran</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="*" |rename job_result as result, type as status| table job_name, build_number, build_url, scm_url, job_type, job_duration, trigger_by, type, result</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel depends="$show_panel3$">
+      <input type="checkbox" token="hide_panel3">
+        <label></label>
+        <choice value="hide">Hide Panel</choice>
+        <change>
+          <condition value="hide">
+            <unset token="show_panel3"></unset>
+          </condition>
+        </change>
+      </input>
+      <table>
+        <title>Details of Successful builds</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="SUCCESS" |rename job_result as result, type as status| table job_name, build_number, build_url, scm_url, job_type, job_duration, trigger_by, type, result</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel depends="$show_panel4$">
+      <input type="checkbox" token="hide_panel4">
+        <label></label>
+        <choice value="hide">Hide Panel</choice>
+        <change>
+          <condition value="hide">
+            <unset token="show_panel4"></unset>
+          </condition>
+        </change>
+      </input>
+      <table>
+        <title>Details of Failed Builds</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="Failed" |rename job_result as result, type as status| table job_name, build_number, build_url, scm_url, job_type, job_duration, trigger_by, type, result</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <viz type="heat-map-viz.heat-map-viz">
+        <title>Heat Map for Successful builds per Pipeline</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="SUCCESS" | timechart span=1d count by job_name</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="heat-map-viz.heat-map-viz.colorCritical">#d41f1f</option>
+        <option name="heat-map-viz.heat-map-viz.colorHigh">#cba700</option>
+        <option name="heat-map-viz.heat-map-viz.colorLow">#f0f0f0</option>
+        <option name="heat-map-viz.heat-map-viz.colorMedium">#118917</option>
+        <option name="heat-map-viz.heat-map-viz.convertTimeToUTC">false</option>
+        <option name="heat-map-viz.heat-map-viz.enableAnimation">true</option>
+        <option name="heat-map-viz.heat-map-viz.enableShades">true</option>
+        <option name="heat-map-viz.heat-map-viz.hideCellBorders">false</option>
+        <option name="heat-map-viz.heat-map-viz.labelCritical">Critical</option>
+        <option name="heat-map-viz.heat-map-viz.labelFontSize">18</option>
+        <option name="heat-map-viz.heat-map-viz.labelHigh">High</option>
+        <option name="heat-map-viz.heat-map-viz.labelLow">Low</option>
+        <option name="heat-map-viz.heat-map-viz.labelMedium">Medium</option>
+        <option name="heat-map-viz.heat-map-viz.legendPosition">top</option>
+        <option name="heat-map-viz.heat-map-viz.legendText">ranges</option>
+        <option name="heat-map-viz.heat-map-viz.reverseNegativeShade">false</option>
+        <option name="heat-map-viz.heat-map-viz.shape">square</option>
+        <option name="heat-map-viz.heat-map-viz.showDateInTooltip">true</option>
+        <option name="heat-map-viz.heat-map-viz.showLegend">true</option>
+        <option name="heat-map-viz.heat-map-viz.showValues">false</option>
+        <option name="heat-map-viz.heat-map-viz.tokenLabel">hm_token_label</option>
+        <option name="heat-map-viz.heat-map-viz.tokenTime">hm_token_time</option>
+        <option name="heat-map-viz.heat-map-viz.tokenValue">hm_token_value</option>
+        <option name="heat-map-viz.heat-map-viz.tooltipDateFormat">auto</option>
+        <option name="heat-map-viz.heat-map-viz.valHigh">50</option>
+        <option name="heat-map-viz.heat-map-viz.valLow">0</option>
+        <option name="heat-map-viz.heat-map-viz.valMedium">10</option>
+        <option name="heat-map-viz.heat-map-viz.xAxisDateFormat">auto</option>
+        <option name="heat-map-viz.heat-map-viz.xAxisRotate">false</option>
+        <option name="heat-map-viz.heat-map-viz.xAxisTickCount">0</option>
+        <option name="heat-map-viz.heat-map-viz.yaxiswidth">auto</option>
+        <option name="heat-map-viz.heat-map-viz.yaxiswidthpx">250</option>
+        <option name="refresh.display">progressbar</option>
+      </viz>
+    </panel>
+    <panel>
+      <viz type="heat-map-viz.heat-map-viz">
+        <title>Heat Map for Failed builds per pipeline</title>
+        <search>
+          <query>index="jenkins_statistics" job_result="FAILED" | timechart span=1d count by job_name</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="dropdown" token="build_status">
+        <label>Select Build Status</label>
+        <choice value="*">All</choice>
+        <choice value="SUCCESS">Sucess</choice>
+        <choice value="FAILED">Failure</choice>
+      </input>
+      <input type="multiselect" token="job_name">
+        <label>Select Jenkins Pipeline</label>
+        <choice value="*">All</choice>
+        <valuePrefix>job_name="</valuePrefix>
+        <valueSuffix>"</valueSuffix>
+        <delimiter> or </delimiter>
+        <fieldForLabel>Job Name</fieldForLabel>
+        <fieldForValue>job_name</fieldForValue>
+        <search>
+          <query>index="jenkins_statistics" job_result="*" |stats count by job_name</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+      </input>
+      <chart>
+        <title>Timechart</title>
+        <search>
+          <query>index="jenkins_statistics" job_result=$build_status$ $job_name$| timechart span=1d count by job_name| trendline sma5(Value) as trend</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+</form>
