@@ -1,0 +1,18 @@
+Splunk Instance
+
+1. Installed Splunk App for Jnekins
+2. Created SoftMania Jenkins Monitoring App
+3. Settings --> Data Inputs --> HEC Inputs --> Global Settings --> All Tokens (Enable) and Uncheck Enable SSL
+4. HEC Inputs --> New Token -->
+
+Jira
+
+4. Manage Jenkins --> Plugins --> Splunk Plugin
+5. 
+Editing to check github integration is working or not
+
+
+index="jenkins_statistics" job_result="*"| sendemail to="varshamanasa9903@gmail.com" cc="ibnusain4314@gmail.com" subject="Splunk Email sending test email" message="This is a test email from splunk" sendresults=true inline=true
+
+
+Testing comit
