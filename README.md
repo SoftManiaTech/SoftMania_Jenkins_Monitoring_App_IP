@@ -1,4 +1,4 @@
-# Release Notes 
+# Release Notes of SoftMania Jenkins Monitoring App
 
 ## v1.0.0 - First Stable Version
 
