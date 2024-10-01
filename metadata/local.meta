@@ -23,7 +23,7 @@ access = read : [ * ]
 export = none
 owner = admin
 version = 9.2.0
-modtime = 1724911403.659545000
+modtime = 1727707316.310188000
 
 [views/jenkins_monitoring]
 owner = admin
