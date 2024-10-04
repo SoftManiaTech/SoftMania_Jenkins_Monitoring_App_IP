@@ -1,6 +1,6 @@
 # Release Notes of SoftMania Jenkins Monitoring App
 
-## v1.0.0 - First Stable Version
+## v1.0.0 - First Stable Version (02-10-2024)
 
 1. Daily Jenkins Report
   This every day report that consist of Pipeline details that was executed in last 24hrs
